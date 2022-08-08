@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: joshuaavalon/flyway-action@v3.0.0
         with:
-          url: ${{secrets.DATA_URL}}
+          url: jdbc:postgresql://localhost:5432/TestApp
           user: test_pg
           password: test@123
           locations: ${{secrets.DATA_LOCATION}}
