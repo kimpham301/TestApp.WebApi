@@ -28,5 +28,5 @@ jobs:
           url: jdbc:postgresql://localhost:5432/TestApp
           user: test_pg
           password: test@123
-          locations: filesystem:TestApp.WebApi/TestApp.Data/migrations
+          locations: filesystem:C:/Users/kpham/Documents/TestApp.WebApi/TestApp.WebApi/TestApp.Data/migrations
       - run: echo 'testing'
