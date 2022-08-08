@@ -14,7 +14,7 @@ jobs:
         image: postgres
         env:
           POSTGRES_DB: TestApp
-          POSTGRES_USER: test_pg
+          POSTGRES_USER: user
           POSTGRES_PASSWORD: password
         options: >-
           --health-cmd pg_isready
@@ -22,11 +22,11 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: joshuaavalon/flyway-action@v3.0.0
         with:
           url: jdbc:postgresql://localhost:5432/TestApp
-          user: test_pg
-          password: test@123
-          locations: ${{secrets.DATA_LOCATION}}
+          user: user
+          password: password
+          locations: filesystem:TestApp.WebApi/TestApp.Data/migrations
       - run: echo 'testing'
