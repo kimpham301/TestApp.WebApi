@@ -15,7 +15,7 @@ jobs:
         env:
           POSTGRES_DB: TestApp
           POSTGRES_USER: test_pg
-          POSTGRES_PASSWORD: test@123
+          POSTGRES_PASSWORD: password
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
