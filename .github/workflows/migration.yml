@@ -14,8 +14,8 @@ jobs:
         image: postgres
         env:
           POSTGRES_DB: TestApp
-          POSTGRES_USER: ${{secrets.DATA_USER}}
-          POSTGRES_PASSWORD: ${{secrets.DATA_PASSWORD}}
+          POSTGRES_USER: test_pg
+          POSTGRES_PASSWORD: test@123
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -26,7 +26,7 @@ jobs:
       - uses: joshuaavalon/flyway-action@v3.0.0
         with:
           url: ${{secrets.DATA_URL}}
-          user: ${{secrets.DATA_USER}}
-          password: ${{secrets.DATA_PASSWORD}}
+          user: test_pg
+          password: test@123
           locations: ${{secrets.DATA_LOCATION}}
       - run: echo 'testing'
