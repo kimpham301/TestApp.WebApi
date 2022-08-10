@@ -3,30 +3,23 @@ on:
   push:
     branches:
     - master
-  pull_request: 
-    branches:
-    - master
+
 jobs:
-  test:
+  migrate:
+    name: Migrate Database
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_DB: TestApp
-          POSTGRES_USER: user
-          POSTGRES_PASSWORD: password
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+    env:
+      SUPABASE_HOST: db.${{secrets.DATA_HOST}}.supabase.co
+      SUPABASE_PORT: 5432
+      SUPABASE_USER: postgres
+      SUPABASE_DB: postgres
     steps:
-      - uses: actions/checkout@v3
-      - uses: joshuaavalon/flyway-action@v3.0.0
-        with:
-          url: jdbc:postgresql://localhost:5432/TestApp
-          user: test_pg
-          password: test@123
-          locations: filesystem:C:/Users/kpham/Documents/TestApp.WebApi/TestApp.WebApi/TestApp.Data/migrations
-      - run: echo 'testing'
+      - uses: actions/checkout@v2
+      - run: >-
+          docker run --rm
+          --volume ${{ github.workspace }}/TestApp.WebApi/TestApp.Data/migrations:/flyway/sql:ro
+          flyway/flyway:7.12.1-alpine
+          -url="jdbc:postgresql://${{ env.SUPABASE_HOST }}:${{ env.SUPABASE_PORT }}/${{ env.SUPABASE_DB }}?sslmode=require"
+          -user="${{ env.SUPABASE_USER }}"
+          -password="${{ secrets.DATA_PASSWORD }}"
+          migrate
