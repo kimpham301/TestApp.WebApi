@@ -1,3 +1,8 @@
 # TestApp.WebApi
-** SonarCloud
-[[https://sonarcloud.io/dashboard/index/kimpham301_TestApp.WebApi][file:https://sonarcloud.io/api/project_badges/measure?project=kimpham301_TestApp.WebApi&metric=ncloc#.svg]] [[https://sonarcloud.io/dashboard/index/kimpham301_TestApp.WebApi][file:https://sonarcloud.io/api/project_badges/measure?kimpham301_TestApp.WebApi&metric=bugs#.svg]] [[https://sonarcloud.io/dashboard/index/kimpham301_TestApp.WebApi][file:https://sonarcloud.io/api/project_badges/measure?project=kimpham301_TestApp.WebApi&metric=vulnerabilities#.svg]] [[https://sonarcloud.io/dashboard/index/kimpham301_TestApp.WebApi][file:https://sonarcloud.io/api/project_badges/measure?project=kimpham301_TestApp.WebApi=code_smells#.svg]] [[https://sonarcloud.io/dashboard/index/kimpham301_TestApp.WebApi][file:https://sonarcloud.io/api/project_badges/measure?project=kimpham301_TestApp.WebApi&metric=coverage#.svg]]
+Test Application API
+## SonarCloud
+![linesofcodes](https://sonarcloud.io/api/project_badges/measure?project=kimpham301_TestApp.WebApi&metric=ncloc#.svg)
+![bugs](https://sonarcloud.io/api/project_badges/measure?project=kimpham301_TestApp.WebApi&metric=bugs#.svg)
+![vulnerabitlites](https://sonarcloud.io/api/project_badges/measure?project=kimpham301_TestApp.WebApi&metric=vulnerabilities#.svg)
+![codesmells](https://sonarcloud.io/api/project_badges/measure?project=kimpham301_TestApp.WebApi&metric=code_smells#.svg)
+![coverage](https://sonarcloud.io/api/project_badges/measure?project=kimpham301_TestApp.WebApi&metric=coverage#.svg)
