@@ -1,7 +1,14 @@
+using Microsoft.Extensions.Configuration;
+using TestApp.WebApi.Data;
+using TestApp.WebApi.Models;
+using System;
+using TestApp.WebApi.Repository;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddSingleton<TestApiDbContext>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
