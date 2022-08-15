@@ -6,7 +6,7 @@ using TestApp.WebApi.Repository;
 
 namespace TestApp.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -26,7 +26,7 @@ namespace TestApp.WebApi.Controllers
                 var userLogin = await _accountRepository.UserLogin(account.email, account.password);
                 if (userLogin == null)
                 {
-                    return BadRequest("Username or password is incorret");
+                    return BadRequest("Email or password is incorret");
                 }
 
                 return Ok(userLogin);
@@ -45,7 +45,7 @@ namespace TestApp.WebApi.Controllers
                 var existedEmail = await _accountRepository.ExistedEmail(account.email);
                 if (existedEmail != null)
                 {
-                    return BadRequest("Username is already existed");
+                    return BadRequest("Email is already existed");
                 }
                 var userRegister = await _accountRepository.Register(account);
                 return Ok("User is successfully registered");
