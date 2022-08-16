@@ -6,4 +6,3 @@ ALTER TABLE Test
     ADD COLUMN Option3 varchar,
     ADD COLUMN Option4 varchar
 ;
-    
