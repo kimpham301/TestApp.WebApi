@@ -14,13 +14,13 @@ namespace TestApp.WebApi.Repository
             _context = context;
         }
 
-        public async Task<Account> UserLogin(string email, string password)
+        public async Task<Account> UserLogin(AuthenticateRequest account)
         {
-            string hashedPassword = Password.hashPassword(password);
+            string hashedPassword = Password.hashPassword(account.password);
             using (var connection = _context.CreateConnection())
             {
                 var user = await connection.QuerySingleOrDefaultAsync<Account>(
-                    $@"SELECT * FROM Accounts WHERE email = '{email}' AND password = '{hashedPassword}'");
+                    $@"SELECT * FROM Accounts WHERE email = '{account.email}' AND password = '{hashedPassword}'");
                 return user;
             }
         }
@@ -28,11 +28,12 @@ namespace TestApp.WebApi.Repository
         public async Task<int> Register(Account newAccount)
         {
             string hashedPassword = Password.hashPassword(newAccount.password);
-            var query = "INSERT INTO Accounts (email, password) VALUES (@email, @password)";
+            var query = "INSERT INTO Accounts (email, password, roles) VALUES (@email, @password, @roles)";
 
             var parameters = new DynamicParameters();
             parameters.Add("email", newAccount.email, DbType.String);
             parameters.Add("password", hashedPassword, DbType.String);
+            parameters.Add("roles", newAccount.roles, DbType.Int32);
 
             using (var connection = _context.CreateConnection())
             {

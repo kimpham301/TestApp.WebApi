@@ -1,13 +1,7 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Principal;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using TestApp.WebApi.Authorization;
+﻿using Microsoft.AspNetCore.Mvc;
 using TestApp.WebApi.Models;
-using TestApp.WebApi.Repository;
+
+using TestApp.WebApi.Services;
 
 namespace TestApp.WebApi.Controllers
 {
@@ -15,74 +9,55 @@ namespace TestApp.WebApi.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IAccountRepository _accountRepository;
-        private readonly IConfiguration _configuration;
+        private readonly IAccountService _accountService;
 
-        public UsersController(IAccountRepository accountRepository)
+        public UsersController(IAccountService accountService)
         {
-            _accountRepository = accountRepository;
-        }
-
-        public AuthController(IConfiguration configuration)
-        {
-            _configuration = configuration;
+            _accountService = accountService;
         }
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> UserLogin(Account account)
+        public async Task<IActionResult> UserLogin(AuthenticateRequest account)
         {
             try
             {
-                var userLogin = await _accountRepository.UserLogin(account.email, account.password);
+                var userLogin = await _accountService.Authenticate(account);
                 if (userLogin == null)
                 {
-                    return BadRequest("Email or password is incorret");
+                    return BadRequest("Email or password is incorrect");
                 }
-
-                string token = CreateToken(account);
-                return Ok(userLogin + token);
+                return Ok(userLogin);
             }
             catch(Exception err)
             {
                 return StatusCode(500, err.Message);
             }
         }
+
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> UserRegister(Account account)
         {
             try
             {
-                var existedEmail = await _accountRepository.ExistedEmail(account.email);
+                var existedEmail = await _accountService.ExistedEmail(account.email);
                 if (existedEmail != null)
                 {
                     return BadRequest("Email is already existed");
                 }
-                var userRegister = await _accountRepository.Register(account);
+
+                var userRegister = await _accountService.Register(account);
+                if (userRegister == null)
+                {
+                    return BadRequest("There's something wrong");
+                }
                 return Ok("User is successfully registered");
             }
             catch (Exception err)
             {
                 return StatusCode(500, err.Message);
             }
-        }
-        private string CreateToken(Account account)
-        {
-            List<Claim> claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Email, account.email)
-            };
-            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
-
-            var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
-            var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.Now.AddDays(1),
-                signingCredentials: cred);
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-            return jwt;
         }
     }
 }
