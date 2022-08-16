@@ -56,12 +56,14 @@ namespace TestApp.WebApi.Repository
 
         public async Task<int> AddQuestion(Test test)
         {
-            var query = $@"INSERT INTO Test (question_id, question, Options, answer) 
-                            VALUES ('{test.question_id}','{test.question}',ARRAY{test.Options}, {test})";
+            SqlMapper.AddTypeHandler(new ITestRepository.GenericArrayHandler<string>());
+            var query = $@"INSERT INTO Test (question, Options, answer) 
+                            VALUES ('{test.question}',ARRAY {test.Options}, {test})";
             using (var connection = _context.CreateConnection())
             {
                 return await connection.ExecuteAsync(query);
             }
+
         }
-}
+    }
 }

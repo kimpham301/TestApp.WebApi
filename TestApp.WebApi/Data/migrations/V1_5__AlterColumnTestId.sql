@@ -1,5 +1,7 @@
 ﻿ALTER TABLE Test
-    RENAME COLUMN test_id TO question_id;
-
-ALTER TABLE Result
-    RENAME COLUMN test_id TO question_id;
+    DROP COLUMN Options,
+    ADD COLUMN Option1,
+    ADD COLUMN Option2,
+    ADD COLUMN Option3,
+    ADD COLUMN Option4,
+    
