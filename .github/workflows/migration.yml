@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: >-
           docker run --rm
-          --volume ${{ github.workspace }}/TestApp.WebApi/TestApp.Data/migrations:/flyway/sql:ro
+          --volume ${{ github.workspace }}/TestApp.WebApi/Data/migrations:/flyway/sql:ro
           flyway/flyway:7.12.1-alpine
           -url="jdbc:postgresql://${{ env.SUPABASE_HOST }}:${{ env.SUPABASE_PORT }}/${{ env.SUPABASE_DB }}?sslmode=require"
           -user="${{ env.SUPABASE_USER }}"
