@@ -7,6 +7,5 @@ public interface IAccountService
     Task<AuthenticateResponse> Authenticate(AuthenticateRequest model);
     Task<int> Register(Account newAccount);
     Task<Account> ExistedEmail(string email);
-    
-
+    public Task<Result> Load_Result(Result result);
 }

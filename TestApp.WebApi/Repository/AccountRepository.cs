@@ -9,6 +9,7 @@ namespace TestApp.WebApi.Repository
     public class AccountRepository : IAccountRepository
     {
         private readonly TestApiDbContext _context;
+
         public AccountRepository(TestApiDbContext context)
         {
             _context = context;
@@ -40,6 +41,7 @@ namespace TestApp.WebApi.Repository
                 return await connection.ExecuteAsync(query, parameters);
             }
         }
+
         public async Task<Account> ExistedEmail(string email)
         {
             using (var connection = _context.CreateConnection())
@@ -49,6 +51,19 @@ namespace TestApp.WebApi.Repository
                 return userEmail;
             }
         }
-    }
 
+        public async Task<Result> Load_Result(Result result)
+        {
+            var query = "INSERT INTO Result(user_id, score, TimeTaken) VALUES (@id, @score, @TimeTaken)";
+            var parameters = new DynamicParameters();
+            parameters.Add("id", result.user_id, DbType.Int32);
+            parameters.Add("score", result.score, DbType.Int32);
+            parameters.Add("TimeTaken", result.TimeTaken, DbType.Int32);
+            using (var connection = _context.CreateConnection())
+            {
+                var user_result = await connection.QuerySingleOrDefaultAsync<Result>(query);
+                return user_result;
+            }
+        }
+    }
 }
