@@ -39,6 +39,12 @@ namespace TestApp.WebApi.Services
             return userEmail;
         }
 
+        public async Task<Result> Load_Result(Result result)
+        {
+            var userResult = await _accountRepository.Load_Result(result);
+            return userResult;
+        }
+
         private string CreateToken(Account account)
         {
             List<Claim> claims = new List<Claim>

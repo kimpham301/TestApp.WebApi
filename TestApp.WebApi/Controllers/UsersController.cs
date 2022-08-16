@@ -59,5 +59,25 @@ namespace TestApp.WebApi.Controllers
                 return StatusCode(500, err.Message);
             }
         }
+        
+        [HttpPost]
+        [Route("result")]
+        public async Task<IActionResult> UserResult(Result result)
+        {
+            try
+            {
+                var userResult = await _accountService.Load_Result(result);
+                if (userResult != null)
+                {
+                    return BadRequest("No test");
+                }
+                return Ok("Result added");
+            }
+            catch (Exception err)
+            {
+                return StatusCode(500, err.Message);
+            }
+        }
+        
     }
 }

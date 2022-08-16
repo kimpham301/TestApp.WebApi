@@ -8,3 +8,10 @@ public class Account
     public int roles { get; set; }
     
 }
+public class Result
+{
+    public int user_id { get; set; }
+    public string score { get; set; }
+    public int TimeTaken { get; set; }
+
+}

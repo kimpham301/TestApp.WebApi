@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TestApp.WebApi.Models;
 using TestApp.WebApi.Repository;
-using TestApp.WebApi.Services;
 
 namespace TestApp.WebApi.Controllers
 {
@@ -21,10 +20,6 @@ namespace TestApp.WebApi.Controllers
             try
             {
                 var questions = await _testRepository.GetQuestions();
-                if (questions == null)
-                {
-                    return BadRequest("There's no test");
-                }
 
                 return Ok(questions);
             }
@@ -52,7 +47,7 @@ namespace TestApp.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("answerrs")]
+        [Route("answers")]
         public async Task<IActionResult> RetrieveAnswers(int[] qnIds)
         {
             try
@@ -67,6 +62,25 @@ namespace TestApp.WebApi.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+        
+        [HttpPost]
+        [Route("newQuestion")]
+        public async Task<IActionResult> AddQuestion(Test test)
+        {
+            try
+            {
+                var addQuestion = await _testRepository.AddQuestion(test);
+                if (addQuestion == null)
+                    return BadRequest("No question added");
+
+                return Ok(addQuestion);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteQuestion(int id)
         {
@@ -84,5 +98,6 @@ namespace TestApp.WebApi.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+        
     }
 }

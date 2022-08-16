@@ -17,7 +17,7 @@ namespace TestApp.WebApi.Repository
 
         public async Task<IEnumerable<Test>> GetQuestions()
         {
-            var query = "SELECT test_id, question, answer FROM Test";
+            var query = "SELECT question_id, question, answer FROM Test";
             using (var connection = _context.CreateConnection())
             {
                 var randomQues = await connection.QueryAsync<Test>(query);
@@ -27,7 +27,7 @@ namespace TestApp.WebApi.Repository
 
         public async Task<Test> GetQuestion(int id)
         {
-            var query = "SELECT * FROM Test WHERE test_id = @Id";
+            var query = "SELECT * FROM Test WHERE question_id = @Id";
             using (var connection = _context.CreateConnection())
             {
                 var question = await connection.QuerySingleOrDefaultAsync<Test>(query, new { id });
@@ -37,21 +37,31 @@ namespace TestApp.WebApi.Repository
 
         public async Task<IEnumerable<Test>> RetrieveAnswers(int[] qnIds)
         {
-            var query = $@"SELECT answer, question FROM Test WHERE test_id IN ({string.Join(",", qnIds)})";
+            var query = "SELECT answer, question FROM Test WHERE question_id = ANY(@qnIds)";
             using (var connection = _context.CreateConnection())
             {
-                var answer = await connection.QueryAsync<Test>(query);
+                var answer = await connection.QueryAsync<Test>(query, new{qnIds});
                 return answer.ToList();
             }
         }
-        
+
         public async Task<int> DeleteQuestion(int id)
         {
-            var query = $@"DELETE FROM Test WHERE test_id = '{id}'";
+            var query = $@"DELETE FROM Test WHERE question_id = '{id}'";
             using (var connection = _context.CreateConnection())
             {
                 return await connection.ExecuteAsync(query);
             }
         }
-    }
+
+        public async Task<int> AddQuestion(Test test)
+        {
+            var query = $@"INSERT INTO Test (question_id, question, Options, answer) 
+                            VALUES ('{test.question_id}','{test.question}',ARRAY{test.Options}, {test})";
+            using (var connection = _context.CreateConnection())
+            {
+                return await connection.ExecuteAsync(query);
+            }
+        }
+}
 }
