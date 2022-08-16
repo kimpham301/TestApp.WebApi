@@ -1,0 +1,2 @@
+ALTER TABLE Test
+    ALTER COLUMN answer TYPE INT;

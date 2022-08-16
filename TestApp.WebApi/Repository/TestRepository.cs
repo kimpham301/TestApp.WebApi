@@ -1,4 +1,5 @@
-﻿using TestApp.WebApi.Models;
+﻿using System.Collections;
+using TestApp.WebApi.Models;
 using TestApp.WebApi.Data;
 using TestApp.WebApi.Authorization;
 using System.Data;
@@ -15,13 +16,21 @@ namespace TestApp.WebApi.Repository
             _context = context;
         }
 
-        public async Task<IEnumerable<Test>> GetQuestions()
+        public async Task<IEnumerable> GetQuestions()
         {
-            var query = "SELECT question_id, question, answer FROM Test";
             using (var connection = _context.CreateConnection())
             {
-                var randomQues = await connection.QueryAsync<Test>(query);
-                return randomQues.ToList();
+                var allQuestionQuery =
+                    await connection.QueryAsync<Test>($@"SELECT * FROM Test");
+                var questionList = allQuestionQuery.Select(x => new
+                {
+                    question_id = x.question_id,
+                    question = x.question,
+                    Options = new string[] { x.Option1, x.Option2, x.Option3, x.Option4 }
+                }).OrderBy(y => Guid.NewGuid())
+                    .Take(5)
+                    .ToList();
+                return questionList;
             }
         }
 
@@ -56,12 +65,19 @@ namespace TestApp.WebApi.Repository
 
         public async Task<int> AddQuestion(Test test)
         {
-            SqlMapper.AddTypeHandler(new ITestRepository.GenericArrayHandler<string>());
-            var query = $@"INSERT INTO Test (question, Options, answer) 
-                            VALUES ('{test.question}',ARRAY {test.Options}, {test})";
+            var query = "INSERT INTO Test (question, answer, option1, option2, option3, option4) VALUES (@question, @answer, @option1, @option2, @option3, @option4)";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("question", test.question, DbType.String);
+            parameters.Add("answer", test.answer, DbType.Int32);
+            parameters.Add("option1", test.Option1, DbType.String);
+            parameters.Add("option2", test.Option2, DbType.String);
+            parameters.Add("option3", test.Option3, DbType.String);
+            parameters.Add("option4", test.Option4, DbType.String);
+            
             using (var connection = _context.CreateConnection())
             {
-                return await connection.ExecuteAsync(query);
+                return await connection.ExecuteAsync(query, parameters);
             }
 
         }
