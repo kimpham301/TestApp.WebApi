@@ -16,6 +16,6 @@ public class TestAppController : ControllerBase
     [HttpGet]
     public IActionResult Get()
     {
-        return Ok("Testing");
+        return Ok("WebApi is ready");
     }
 }

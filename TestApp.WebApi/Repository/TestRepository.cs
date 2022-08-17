@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using TestApp.WebApi.Models;
 using TestApp.WebApi.Data;
-using TestApp.WebApi.Authorization;
 using System.Data;
 using Dapper;
 
