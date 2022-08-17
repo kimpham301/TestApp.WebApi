@@ -8,6 +8,6 @@ namespace TestApp.WebApi.Repository
         public Task<int> Register(Account newAccount);
 
         public Task<Account> ExistedEmail(string email);
-        public Task<Result> Load_Result(Result result);
+        public Task<int> Load_Result(Result result);
     }
 }

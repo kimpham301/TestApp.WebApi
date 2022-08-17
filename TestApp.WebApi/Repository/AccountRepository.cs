@@ -34,7 +34,7 @@ namespace TestApp.WebApi.Repository
             var parameters = new DynamicParameters();
             parameters.Add("email", newAccount.email, DbType.String);
             parameters.Add("password", hashedPassword, DbType.String);
-            parameters.Add("roles", newAccount.roles, DbType.Int32);
+            parameters.Add("roles", 1, DbType.Int32);
 
             using (var connection = _context.CreateConnection())
             {
@@ -52,7 +52,7 @@ namespace TestApp.WebApi.Repository
             }
         }
 
-        public async Task<Result> Load_Result(Result result)
+        public async Task<int> Load_Result(Result result)
         {
             var query = "INSERT INTO Result(user_id, score, TimeTaken) VALUES (@id, @score, @TimeTaken)";
             var parameters = new DynamicParameters();
@@ -61,8 +61,7 @@ namespace TestApp.WebApi.Repository
             parameters.Add("TimeTaken", result.TimeTaken, DbType.Int32);
             using (var connection = _context.CreateConnection())
             {
-                var user_result = await connection.QuerySingleOrDefaultAsync<Result>(query);
-                return user_result;
+                return await connection.ExecuteAsync(query);
             }
         }
     }

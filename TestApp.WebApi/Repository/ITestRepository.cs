@@ -10,7 +10,7 @@ namespace TestApp.WebApi.Repository
 
         public Task<Test> GetQuestion(int id);
 
-        public Task<IEnumerable<Test>> RetrieveAnswers(int[] qnIds);
+        public Task<IEnumerable> RetrieveAnswers(int[] qnIds);
         public Task<int> AddQuestion(Test test);
 
         public Task<int> DeleteQuestion(int id);

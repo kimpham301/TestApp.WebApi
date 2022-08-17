@@ -39,7 +39,7 @@ namespace TestApp.WebApi.Services
             return userEmail;
         }
 
-        public async Task<Result> Load_Result(Result result)
+        public async Task<int> Load_Result(Result result)
         {
             var userResult = await _accountRepository.Load_Result(result);
             return userResult;

@@ -46,7 +46,7 @@ namespace TestApp.WebApi.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("answers")]
         public async Task<IActionResult> RetrieveAnswers(int[] qnIds)
         {
