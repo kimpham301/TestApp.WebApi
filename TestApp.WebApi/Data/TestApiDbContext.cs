@@ -1,13 +1,12 @@
-﻿using System;
-using Npgsql;
+﻿using Npgsql;
 using System.Data;
 
 namespace TestApp.WebApi.Data
 {
     public class TestApiDbContext
     {
-        public IConfiguration _config;
-        private string _connectionString;
+        private readonly IConfiguration _config;
+        private readonly string _connectionString;
 
         public TestApiDbContext(IConfiguration config)
         {
