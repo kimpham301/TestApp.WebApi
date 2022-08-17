@@ -5,9 +5,9 @@ Normal user complete the test and view score. They have no administrative privil
 The update score function haven't been completed yet.
 
 ## Tech Stack
-.NET 6
-Postgresql
-Supabase
+.NET 6\
+Postgresql\
+Supabase\
 Dapper
 
 ## SonarCloud
