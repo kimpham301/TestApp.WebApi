@@ -52,16 +52,16 @@ namespace TestApp.WebApi.Repository
             }
         }
 
-        public async Task<int> Load_Result(Result result)
+        public async Task UpdateAccount(int id, Result result)
         {
-            var query = "INSERT INTO Result(user_id, score, TimeTaken) VALUES (@id, @score, @TimeTaken)";
+            var query = "UPDATE Accounts SET timeTaken = @timeTaken, score = @score WHERE user_id = @user_id";
             var parameters = new DynamicParameters();
-            parameters.Add("id", result.user_id, DbType.Int32);
+            parameters.Add("user_id", result.user_id, DbType.Int32);
+            parameters.Add("timeTaken", result.TimeTaken, DbType.Int32);
             parameters.Add("score", result.score, DbType.Int32);
-            parameters.Add("TimeTaken", result.TimeTaken, DbType.Int32);
             using (var connection = _context.CreateConnection())
             {
-                return await connection.ExecuteAsync(query);
+                await connection.ExecuteAsync(query, parameters);
             }
         }
     }

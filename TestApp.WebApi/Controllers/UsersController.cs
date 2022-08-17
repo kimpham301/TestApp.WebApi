@@ -60,18 +60,13 @@ namespace TestApp.WebApi.Controllers
             }
         }
         
-        [HttpPost]
-        [Route("result")]
-        public async Task<IActionResult> UserResult(Result result)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateResult(int id, Result result)
         {
             try
             {
-                var userResult = await _accountService.Load_Result(result);
-                if (userResult != null)
-                {
-                    return BadRequest("No test");
-                }
-                return Ok("Result added");
+                await _accountService.UpdateAccount(id, result);
+                return NoContent();
             }
             catch (Exception err)
             {
