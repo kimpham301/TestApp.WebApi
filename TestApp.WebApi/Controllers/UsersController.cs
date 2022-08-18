@@ -59,12 +59,36 @@ namespace TestApp.WebApi.Controllers
                 return StatusCode(500, err.Message);
             }
         }
+
+        [HttpGet("{id}", Name="AccountById")]
+        public async Task<ActionResult> GetUser(int id)
+        {
+            try
+            {
+                var getUser = await _accountService.GetUser(id);
+                if (getUser == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(getUser);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            } 
         
+        }
+
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateResult(int id, Result result)
         {
             try
             {
+                var dbAccount = await _accountService.GetUser(id);
+                if (dbAccount == null)
+                    return NotFound();
+                
                 await _accountService.UpdateAccount(id, result);
                 return NoContent();
             }

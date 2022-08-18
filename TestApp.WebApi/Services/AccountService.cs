@@ -38,6 +38,12 @@ namespace TestApp.WebApi.Services
             return userEmail;
         }
 
+        public async Task<Account> GetUser(int id)
+        {
+            var getUser = await _accountRepository.GetUser(id);
+            return getUser;
+        }
+
         public async Task UpdateAccount(int id, Result result)
         {
             await _accountRepository.UpdateAccount(id, result);

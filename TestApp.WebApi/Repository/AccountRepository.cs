@@ -52,12 +52,23 @@ namespace TestApp.WebApi.Repository
             }
         }
 
+        public async Task<Account> GetUser(int id)
+        {
+            using (var connection = _context.CreateConnection())
+            {
+                var getUser =
+                    await connection.QueryFirstOrDefaultAsync<Account>(
+                        $@"SELECT * FROM Accounts WHERE user_id = '{id}'");
+                return getUser;
+            }
+        }
+
         public async Task UpdateAccount(int id, Result result)
         {
-            var query = "UPDATE Accounts SET timeTaken = @timeTaken, score = @score WHERE user_id = @user_id";
+            var query = "UPDATE Accounts SET timetaken = @timetaken, score = @score WHERE user_id = @user_id";
             var parameters = new DynamicParameters();
             parameters.Add("user_id", result.user_id, DbType.Int32);
-            parameters.Add("timeTaken", result.TimeTaken, DbType.Int32);
+            parameters.Add("timeTaken", result.timetaken, DbType.Int32);
             parameters.Add("score", result.score, DbType.Int32);
             using (var connection = _context.CreateConnection())
             {

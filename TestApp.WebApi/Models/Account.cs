@@ -12,6 +12,6 @@ public class Result
 {
     public int user_id { get; set; }
     public int score { get; set; }
-    public int TimeTaken { get; set; }
+    public int timetaken { get; set; }
 
 }
